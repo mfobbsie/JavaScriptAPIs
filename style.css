@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Lexend+Deca:wght@100..900&display=swap');
+body {
+    font-family: 'Lexend Deca', sans-serif;
+    background-color: antiquewhite;
+    margin: 0;
+    padding: 20px;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+h1 {
+    font-family: 'Gochi Hand', cursive;
+    color: #352e25;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(53, 46, 37, 0.5);
+}
+h2 {
+    color: #352e25;
+    margin-top: 40px;
+}
+p {
+    color: #666;
+    line-height: 1.6;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+.grid-item {
+    background-color: whitesmoke;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.2s;
+}
+.grid-item:hover {    transform: translateY(-5px);
+}
+.grid-item button{
+    background-color: #352e25;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}  
+.grid-item button:hover {
+    background-color: #5c5249;
+}
