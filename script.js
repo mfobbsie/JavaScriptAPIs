@@ -380,6 +380,11 @@ document.addEventListener("DOMContentLoaded", () => {
     buttons.githubUser.addEventListener("click", getGitHubUser);
     buttons.joke.addEventListener("click", getJoke);
     buttons.cityBikes.addEventListener("click", getCityBikesNetworks);
+    cityBikesFilterInput?.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        getCityBikesNetworks();
+      }
+    });
     buttons.trendingMovies.addEventListener("click", getTrendingMovies);
     buttons.weather.addEventListener("click", getWeather);
   }
