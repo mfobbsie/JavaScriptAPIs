@@ -82,3 +82,51 @@ p {
   color: #7a746d;
   line-height: 1.4;
 }
+
+.weather-container .result-area {
+  margin-top: 10px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.weather-container .result-area h4 {
+  margin: 10px 0 6px;
+}
+
+.weather-container .result-area ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.currency-container .result-area {
+  margin-top: 10px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.currency-container .result-area h3 {
+  margin: 0 0 8px;
+}
+
+.currency-container .result-area ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.citybikes-container .result-area {
+  margin-top: 10px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.citybikes-container .result-area h3 {
+  margin: 0 0 8px;
+}
+
+.citybikes-container .result-area ul {
+  margin: 0;
+  padding-left: 18px;
+}
