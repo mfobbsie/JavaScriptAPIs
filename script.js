@@ -1,11 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Config
   const API_KEYS = {
-    tmdb: "YOUR_TMDB_API_KEY",
+    tmdb: "5eb866fba1a034751180fe223a781ee8",
   };
 
   const API_URLS = {
     catImage: "https://api.thecatapi.com/v1/images/search",
+    cityBikesNetworks: "http://api.citybik.es/v2/networks",
     currencyBase: "https://open.er-api.com/v6/latest/USD",
     dogImage: "https://dog.ceo/api/breeds/image/random",
     githubUserBase: "https://api.github.com/users",
@@ -22,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dog: document.querySelector(".get-dog-button"),
     githubUser: document.querySelector(".get-github-user-button"),
     joke: document.querySelector(".get-joke-button"),
-    meetup: document.querySelector(".get-meetup-button"),
+    cityBikes: document.querySelector(".get-citybikes-button"),
     trendingMovies: document.querySelector(".get-trending-movies-button"),
     weather: document.querySelector(".get-weather-button"),
   };
@@ -33,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dog: document.querySelector(".dog-container"),
     githubUser: document.querySelector(".github-user-container"),
     joke: document.querySelector(".joke-container"),
-    meetup: document.querySelector(".meetup-container"),
+    cityBikes: document.querySelector(".citybikes-container"),
     trendingMovies: document.querySelector(".trending-movies-container"),
     weather: document.querySelector(".weather-container"),
   };
@@ -229,11 +230,52 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function getMeetups() {
-    setError(
-      containers.meetup,
-      "Meetup API integration needs OAuth setup. Add your endpoint and token to enable this feature.",
+  async function getCityBikesNetworks() {
+    const countryFilter = prompt(
+      "Enter a country code to filter (example: US, DE, FR). Leave blank for all:",
     );
+
+    try {
+      const data = await fetchJson(
+        API_URLS.cityBikesNetworks,
+        "Could not fetch CityBikes networks.",
+      );
+
+      const allNetworks = data.networks || [];
+      const normalizedFilter = countryFilter
+        ? countryFilter.trim().toUpperCase()
+        : "";
+
+      const filteredNetworks = normalizedFilter
+        ? allNetworks.filter(
+            (network) =>
+              network.location?.country?.toUpperCase() === normalizedFilter,
+          )
+        : allNetworks;
+
+      const limitedNetworks = filteredNetworks.slice(0, 20);
+
+      if (limitedNetworks.length === 0) {
+        throw new Error("No CityBikes networks found for that filter.");
+      }
+
+      const resultArea = getResultArea(containers.cityBikes, "result-area");
+      const cityBikesList = limitedNetworks
+        .map((network) => {
+          const city = network.location?.city || "Unknown city";
+          const country = network.location?.country || "--";
+          return `<li>${city}, ${country} — ${network.name}</li>`;
+        })
+        .join("");
+
+      resultArea.innerHTML = `
+        <h3>CityBikes Networks${normalizedFilter ? ` (${normalizedFilter})` : ""}</h3>
+        <p>Showing ${limitedNetworks.length} of ${filteredNetworks.length} available networks.</p>
+        <ul>${cityBikesList}</ul>
+      `;
+    } catch (error) {
+      setError(containers.cityBikes, error.message);
+    }
   }
 
   async function getTrendingMovies() {
@@ -318,7 +360,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p>Conditions: ${currentEmoji} ${currentCondition}</p>
         <h4>3-Day Forecast</h4>
         <ul>${forecastItems}</ul>
-        <p><small>Legend: ☀️ clear · 🌤️ partly cloudy · ☁️ cloudy · 🌫️ fog · 🌧️ rain · ❄️ snow · ⛈️ storm</small></p>
+        <p class="weather-legend"><small>Legend: ☀️ clear · 🌤️ partly cloudy · ☁️ cloudy · 🌫️ fog · 🌧️ rain · ❄️ snow · ⛈️ storm</small></p>
       `;
     } catch (error) {
       setError(containers.weather, error.message);
@@ -331,7 +373,7 @@ document.addEventListener("DOMContentLoaded", () => {
     buttons.dog.addEventListener("click", getDogImage);
     buttons.githubUser.addEventListener("click", getGitHubUser);
     buttons.joke.addEventListener("click", getJoke);
-    buttons.meetup.addEventListener("click", getMeetups);
+    buttons.cityBikes.addEventListener("click", getCityBikesNetworks);
     buttons.trendingMovies.addEventListener("click", getTrendingMovies);
     buttons.weather.addEventListener("click", getWeather);
   }

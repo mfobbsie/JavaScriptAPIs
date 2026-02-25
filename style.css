@@ -66,3 +66,9 @@ p {
 .github-avatar {
   max-width: 100px;
 }
+
+.weather-legend {
+  margin-top: 10px;
+  color: #7a746d;
+  line-height: 1.4;
+}
