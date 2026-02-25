@@ -52,6 +52,16 @@ p {
   background-color: #5c5249;
 }
 
+.citybikes-filter-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  margin: 8px 0 10px;
+  border: 1px solid #c7c0b7;
+  border-radius: 4px;
+  font-family: "Lexend Deca", sans-serif;
+}
+
 .dog-image,
 .cat-image,
 .github-avatar {

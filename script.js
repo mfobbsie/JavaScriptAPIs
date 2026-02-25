@@ -39,6 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
     weather: document.querySelector(".weather-container"),
   };
 
+  const cityBikesFilterInput = document.querySelector(
+    ".citybikes-filter-input",
+  );
+
   // Helpers
   function getResultArea(container, className) {
     let resultArea = container.querySelector(`.${className}`);
@@ -231,9 +235,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function getCityBikesNetworks() {
-    const countryFilter = prompt(
-      "Enter a country code to filter (example: US, DE, FR). Leave blank for all:",
-    );
+    const filterValue = cityBikesFilterInput?.value?.trim() || "";
+    const normalizedFilter = filterValue.toLowerCase();
 
     try {
       const data = await fetchJson(
@@ -242,14 +245,17 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       const allNetworks = data.networks || [];
-      const normalizedFilter = countryFilter
-        ? countryFilter.trim().toUpperCase()
-        : "";
 
       const filteredNetworks = normalizedFilter
         ? allNetworks.filter(
             (network) =>
-              network.location?.country?.toUpperCase() === normalizedFilter,
+              (network.location?.city || "")
+                .toLowerCase()
+                .includes(normalizedFilter) ||
+              (network.location?.country || "")
+                .toLowerCase()
+                .includes(normalizedFilter) ||
+              (network.name || "").toLowerCase().includes(normalizedFilter),
           )
         : allNetworks;
 
@@ -269,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .join("");
 
       resultArea.innerHTML = `
-        <h3>CityBikes Networks${normalizedFilter ? ` (${normalizedFilter})` : ""}</h3>
+        <h3>CityBikes Networks${filterValue ? ` (${filterValue})` : ""}</h3>
         <p>Showing ${limitedNetworks.length} of ${filteredNetworks.length} available networks.</p>
         <ul>${cityBikesList}</ul>
       `;
