@@ -130,3 +130,29 @@ p {
   margin: 0;
   padding-left: 18px;
 }
+
+.weather-container .result-area,
+.currency-container .result-area,
+.citybikes-container .result-area {
+  scrollbar-width: thin;
+  scrollbar-color: #b8afa3 transparent;
+}
+
+.weather-container .result-area::-webkit-scrollbar,
+.currency-container .result-area::-webkit-scrollbar,
+.citybikes-container .result-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+.weather-container .result-area::-webkit-scrollbar-thumb,
+.currency-container .result-area::-webkit-scrollbar-thumb,
+.citybikes-container .result-area::-webkit-scrollbar-thumb {
+  background-color: #b8afa3;
+  border-radius: 999px;
+}
+
+.weather-container .result-area::-webkit-scrollbar-track,
+.currency-container .result-area::-webkit-scrollbar-track,
+.citybikes-container .result-area::-webkit-scrollbar-track {
+  background: transparent;
+}
