@@ -318,6 +318,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p>Conditions: ${currentEmoji} ${currentCondition}</p>
         <h4>3-Day Forecast</h4>
         <ul>${forecastItems}</ul>
+        <p><small>Legend: ☀️ clear · 🌤️ partly cloudy · ☁️ cloudy · 🌫️ fog · 🌧️ rain · ❄️ snow · ⛈️ storm</small></p>
       `;
     } catch (error) {
       setError(containers.weather, error.message);
