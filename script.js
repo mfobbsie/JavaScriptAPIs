@@ -61,6 +61,23 @@ document.addEventListener("DOMContentLoaded", () => {
     resultArea.innerHTML = `<p>${message}</p>`;
   }
 
+  function setLoading(container, message = "Loading...") {
+    const resultArea = getResultArea(container, "result-area");
+    resultArea.innerHTML = `<p class="loading-state">${message}</p>`;
+  }
+
+  function setButtonLoading(button, isLoading) {
+    if (!button) return;
+
+    if (!button.dataset.defaultText) {
+      button.dataset.defaultText = button.textContent;
+    }
+
+    button.disabled = isLoading;
+    button.classList.toggle("is-loading", isLoading);
+    button.textContent = isLoading ? "Loading..." : button.dataset.defaultText;
+  }
+
   async function fetchJson(url, errorMessage) {
     const response = await fetch(url);
 
@@ -120,6 +137,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Handlers
   async function getCatImage() {
+    setButtonLoading(buttons.cat, true);
+    setLoading(containers.cat, "Loading cat image...");
+
     try {
       const data = await fetchJson(
         API_URLS.catImage,
@@ -139,10 +159,15 @@ document.addEventListener("DOMContentLoaded", () => {
       img.alt = "Random Cat";
     } catch (error) {
       setError(containers.cat, error.message);
+    } finally {
+      setButtonLoading(buttons.cat, false);
     }
   }
 
   async function getCurrencyRates() {
+    setButtonLoading(buttons.currency, true);
+    setLoading(containers.currency, "Loading exchange rates...");
+
     try {
       const data = await fetchJson(
         API_URLS.currencyBase,
@@ -163,10 +188,15 @@ document.addEventListener("DOMContentLoaded", () => {
       resultArea.appendChild(ratesList);
     } catch (error) {
       setError(containers.currency, error.message);
+    } finally {
+      setButtonLoading(buttons.currency, false);
     }
   }
 
   async function getDogImage() {
+    setButtonLoading(buttons.dog, true);
+    setLoading(containers.dog, "Loading dog image...");
+
     try {
       const data = await fetchJson(
         API_URLS.dogImage,
@@ -186,12 +216,17 @@ document.addEventListener("DOMContentLoaded", () => {
       img.alt = "Random Dog";
     } catch (error) {
       setError(containers.dog, error.message);
+    } finally {
+      setButtonLoading(buttons.dog, false);
     }
   }
 
   async function getGitHubUser() {
     const username = prompt("Enter a GitHub username:");
     if (!username) return;
+
+    setButtonLoading(buttons.githubUser, true);
+    setLoading(containers.githubUser, "Loading GitHub user...");
 
     try {
       const data = await fetchJson(
@@ -213,10 +248,15 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     } catch (error) {
       setError(containers.githubUser, error.message);
+    } finally {
+      setButtonLoading(buttons.githubUser, false);
     }
   }
 
   async function getJoke() {
+    setButtonLoading(buttons.joke, true);
+    setLoading(containers.joke, "Loading joke...");
+
     try {
       const data = await fetchJson(
         API_URLS.randomJoke,
@@ -231,12 +271,20 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     } catch (error) {
       setError(containers.joke, error.message);
+    } finally {
+      setButtonLoading(buttons.joke, false);
     }
   }
 
   async function getCityBikesNetworks() {
     const filterValue = cityBikesFilterInput?.value?.trim() || "";
     const normalizedFilter = filterValue.toLowerCase();
+
+    setButtonLoading(buttons.cityBikes, true);
+    if (cityBikesFilterInput) {
+      cityBikesFilterInput.disabled = true;
+    }
+    setLoading(containers.cityBikes, "Loading CityBikes networks...");
 
     try {
       const data = await fetchJson(
@@ -281,17 +329,27 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     } catch (error) {
       setError(containers.cityBikes, error.message);
+    } finally {
+      setButtonLoading(buttons.cityBikes, false);
+      if (cityBikesFilterInput) {
+        cityBikesFilterInput.disabled = false;
+      }
     }
   }
 
   async function getTrendingMovies() {
+    setButtonLoading(buttons.trendingMovies, true);
+
     if (API_KEYS.tmdb === "YOUR_TMDB_API_KEY") {
       setError(
         containers.trendingMovies,
         "Add your TMDB API key in script.js first.",
       );
+      setButtonLoading(buttons.trendingMovies, false);
       return;
     }
+
+    setLoading(containers.trendingMovies, "Loading trending movies...");
 
     try {
       const data = await fetchJson(
@@ -315,12 +373,17 @@ document.addEventListener("DOMContentLoaded", () => {
       resultArea.appendChild(moviesList);
     } catch (error) {
       setError(containers.trendingMovies, error.message);
+    } finally {
+      setButtonLoading(buttons.trendingMovies, false);
     }
   }
 
   async function getWeather() {
     const city = prompt("Enter a city name:");
     if (!city) return;
+
+    setButtonLoading(buttons.weather, true);
+    setLoading(containers.weather, "Loading weather forecast...");
 
     try {
       const geocodeData = await fetchJson(
@@ -370,6 +433,8 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     } catch (error) {
       setError(containers.weather, error.message);
+    } finally {
+      setButtonLoading(buttons.weather, false);
     }
   }
 

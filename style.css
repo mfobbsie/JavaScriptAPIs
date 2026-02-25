@@ -73,6 +73,12 @@ p {
   background-color: #5c5249;
 }
 
+.grid-container div button:disabled,
+.grid-container div button.is-loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 .citybikes-filter-input {
   width: 100%;
   box-sizing: border-box;
@@ -183,4 +189,9 @@ p {
 .currency-container .result-area::-webkit-scrollbar-track,
 .citybikes-container .result-area::-webkit-scrollbar-track {
   background: transparent;
+}
+
+.loading-state {
+  color: #7a746d;
+  font-style: italic;
 }
